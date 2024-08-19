@@ -1,4 +1,4 @@
-import import telebot
+import telebot
 import subprocess
 import datetime
 import os
