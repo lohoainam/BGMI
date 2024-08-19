@@ -356,11 +356,15 @@ with open(USER_FILE, "r") as file:
             bot.send_message(user_id, message_to_broadcast)
         except Exception as e:
             print(f"Không thể gửi thông điệp đến user {user_id}: {str(e)}")
-response = "Thông điệp đã được phát tới tất cả các node thành công."
-else:
+if condition1:
+    response = "Thông điệp đã được phát tới tất cả các node thành công."
+elif condition2:
     response = "Hãy cung cấp thông điệp để phát tán."
-else:
+elif condition3:
     response = "Chỉ Admin mới có quyền thực hiện lệnh này."
+else:
+    response = "Điều kiện không hợp lệ."
+
 
 
     bot.reply_to(message, response)
